@@ -127,4 +127,5 @@ async def analisis_paciente(enfermedad_buscar: str, cirugia: str):
     return respuesta
 
 
-    
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

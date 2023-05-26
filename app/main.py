@@ -126,3 +126,5 @@ async def analisis_paciente(enfermedad_buscar: str, cirugia: str):
 
     return respuesta
 
+
+    

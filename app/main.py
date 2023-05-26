@@ -1,16 +1,16 @@
-from typing import Union
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.templating import Jinja2Templates
 import pandas as pd
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-
 app = FastAPI()
+templates = Jinja2Templates(directory="src")
 
 # Configuracion CORS
-origins = ["http://127.0.0.1", "http://127.0.0.1:5500", "http://127.0.0.1:80"]  # Agrega los orígenes permitidos aquí
+origins = ["*"]  # Agrega los orígenes permitidos aquí
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,6 +26,7 @@ class DatosPaciente(BaseModel):
     tipo_cirugia: str
     enfermedad_adyacente: str
 
+
 @app.get("/tipos_cirugia")
 async def obtener_tipos_cirugia():
     # Leer los datos del archivo XLSX con pandas
@@ -34,24 +35,31 @@ async def obtener_tipos_cirugia():
     # Devolver los tipos de cirugía como opciones
     return {"tipos_cirugia": tipos_cirugia}
 
-
+@app.get("/formulario")
+async def mostrar_formulario(request: Request):
+    return templates.TemplateResponse("formulario.html", {"request": request})
 
 # Definir la ruta y el método HTTP para el endpoint
-@app.post("/analisis_paciente")
-async def analisis_paciente(enfermedad_buscar: str, cirugia: str):
+@app.post("/analisis_paciente", response_class=HTMLResponse)
+async def analisis_paciente(request: Request):
     # Cargar el dataframe de Enfermedades desde el archivo Excel
     df_enfermedades = pd.read_excel("data/EnfermedadesAsa.xlsx")
     df_enfermedades.columns = df_enfermedades.columns.str.strip()
+    form_data = await request.form()
+    edad = int(form_data["edad"])
+    tipo_cirugia = form_data["tipo_cirugia"]
+    enfermedad_adyacente = form_data["enfermedad_adyacente"]
+    
 
     # Función para buscar la enfermedad en las columnas y determinar el tipo de ASA correspondiente
     def buscar_enfermedad(row):
-        if enfermedad_buscar == row["ASA 1"]:
+        if enfermedad_adyacente == row["ASA 1"]:
             return "ASA 1"
-        elif enfermedad_buscar == row["ASA 2"]:
+        elif enfermedad_adyacente == row["ASA 2"]:
             return "ASA 2"
-        elif enfermedad_buscar == row["ASA 3"]:
+        elif enfermedad_adyacente == row["ASA 3"]:
             return "ASA 3"
-        elif enfermedad_buscar == row["ASA 4"]:
+        elif enfermedad_adyacente == row["ASA 4"]:
             return "ASA 4"
         else:
             return "No se encontró"
@@ -65,9 +73,7 @@ async def analisis_paciente(enfermedad_buscar: str, cirugia: str):
     # Cargar el dataframe de Tipos de Cirugías desde el archivo Excel
     df_cirugias = pd.read_excel("data/ListaDeCirugias.xlsx")
     df_cirugias.columns = df_cirugias.columns.str.strip()
-    
-    
-    
+
     def obtener_tipo_riesgo(cirugia):
         if cirugia in df_cirugias["Bajo Riesgo"].values:
             return "Bajo Riesgo"
@@ -76,7 +82,7 @@ async def analisis_paciente(enfermedad_buscar: str, cirugia: str):
         elif cirugia in df_cirugias["Alto Riesgo"].values:
             return "Alto Riesgo"
         else:
-            return None 
+            return None
 
     def obtener_examenes(tipo_asa, tipo_riesgo):
         examenes = []
@@ -115,17 +121,29 @@ async def analisis_paciente(enfermedad_buscar: str, cirugia: str):
 
         return examenes
 
-# Obtener el tipo de riesgo de la cirugía correspondiente al tipo de ASA encontrado
-    tipo_riesgo = obtener_tipo_riesgo(cirugia)
+    # Obtener el tipo de riesgo de la cirugía correspondiente al tipo de ASA encontrado
+    tipo_riesgo = obtener_tipo_riesgo(tipo_cirugia)
 
     if tipo_riesgo is not None:
         examenes = obtener_examenes(tipo_asa, tipo_riesgo)
 
-# Crear el objeto JSON de respuesta
-    respuesta = {"asa": tipo_asa, "tipo_riesgo": tipo_riesgo, "examenes": examenes}
+    # Crear el objeto JSON de respuesta
+    respuesta = {"edad": edad, "asa": tipo_asa, "tipo_riesgo": tipo_riesgo, "examenes": examenes}
+    
+    html_content = templates.TemplateResponse("respuesta.html", {"request": request, "respuesta": respuesta})
 
-    return respuesta
+    return html_content
+
+   
+
 
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+
+
+    
+##enfermedad: Individuo saludable sin enfermedades.
+##cirugia: Histerectomía abdominal

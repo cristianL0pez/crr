@@ -2,12 +2,52 @@
 <html>
 <head>
     <title>Respuesta de análisis de paciente</title>
+    <style>
+        /* Estilos CSS para la respuesta */
+        /* Puedes personalizar los estilos según tus necesidades */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center; /* Centrar el contenido del cuerpo */
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+            text-align: center; /* Centrar los párrafos */
+        }
+        .examenes {
+            color: red;
+        }
+        .logo {
+            display: flex;
+            justify-content: center; /* Centrar horizontalmente */
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 200px;
+            height: 200px;
+        }
+        .btn-volver {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <div class="logo">
+        <img src="http://localhost:8000/static/logo_crr.png" alt="Logo">
+    </div>
     <h1>Respuesta de análisis de paciente</h1>
     <p>Edad: {{ respuesta.edad }}</p>
     <p>Tipo de ASA: {{ respuesta.asa }}</p>
     <p>Tipo de riesgo: {{ respuesta.tipo_riesgo }}</p>
-    <p>Examenes: {{ respuesta.examenes }}</p>
+    <p>Examenes: <span class="examenes">{{ respuesta.examenes }}</span></p>
+    <button class="btn-volver" onclick="window.location.href='/formulario'">Volver al formulario</button>
 </body>
 </html>

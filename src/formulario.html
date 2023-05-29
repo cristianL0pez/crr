@@ -37,6 +37,10 @@
             font-size: 16px;
         }
     </style>
+    <!-- Incluir jQuery y jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
 </head>
 <body>
     <div class="container">
@@ -51,9 +55,9 @@
             </div>
             <div class="form-group">
                 <label>Tipo de Cirugía:</label>
-                <select name="tipo_cirugia" id="tipo-cirugia" required>
-                    <option value="">Seleccionar opción</option>
-                </select>
+                <input type="text" name="tipo_cirugia" id="tipo-cirugia" data-list="tipo-cirugia-list" required>
+                <datalist id="tipo-cirugia-list">
+                </datalist>
             </div>
             <div class="form-group">
                 <label>Enfermedad Adyacente:</label>
@@ -72,12 +76,28 @@
         fetch('/tipos_cirugia')
             .then(response => response.json())
             .then(data => {
-                const tipoCirugiaSelect = document.getElementById('tipo-cirugia');
+                const tipoCirugiaSelect = document.getElementById('tipo-cirugia-list');
                 data.tipos_cirugia.forEach(tipoCirugia => {
                     const option = document.createElement('option');
                     option.value = tipoCirugia;
-                    option.text = tipoCirugia;
                     tipoCirugiaSelect.appendChild(option);
+                });
+
+                // Configurar Autocomplete para el campo "Tipo de Cirugía"
+                $('input[data-list]').each(function () {
+                    const availableTags = $('#' + $(this).attr("data-list")).find('option').map(function () {
+                        return this.value;
+                    }).get();
+
+                    $(this).autocomplete({
+                        source: availableTags
+                    }).on('focus', function () {
+                        $(this).autocomplete('search', ' ');
+                    }).on('search', function () {
+                        if ($(this).val() === '') {
+                            $(this).autocomplete('search', ' ');
+                        }
+                    });
                 });
             });
 

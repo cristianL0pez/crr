@@ -47,7 +47,9 @@ def obtener_tipos_cirugia(request: Request):
     return {"tipos_cirugia": tipos_cirugia}
 
 
-
+@app.get("/")
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/formulario")
 async def mostrar_formulario(request: Request):

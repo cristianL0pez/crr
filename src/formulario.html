@@ -2,50 +2,15 @@
 <html>
 <head>
     <title>Formulario de Datos del Paciente</title>
-    <style>
-        /* Estilos CSS para el formulario */
-        /* Puedes personalizar los estilos según tus necesidades */
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-        .logo {
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .form-group button {
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-    </style>
-    <!-- Incluir jQuery y jQuery UI -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="static/css/formulario.css">
 </head>
 <body>
     <div class="container">
         <div class="logo">
-            <img src="https://crr-uig4.onrender.com/static/logo_crr.png" alt="Logo" style="width: 200px; height: 200px;">
+            <img src="https://crr-uig4.onrender.com/static/logo_crr.png" alt="Logo">
         </div>
         <h1>Datos del paciente</h1>
         <form action="/analisis_paciente" method="post">
@@ -71,48 +36,7 @@
         </form>
     </div>
 
-    <script>
-        // Obtener las opciones de tipo de cirugía
-        fetch('/tipos_cirugia')
-            .then(response => response.json())
-            .then(data => {
-                const tipoCirugiaSelect = document.getElementById('tipo-cirugia-list');
-                data.tipos_cirugia.forEach(tipoCirugia => {
-                    const option = document.createElement('option');
-                    option.value = tipoCirugia;
-                    tipoCirugiaSelect.appendChild(option);
-                });
-
-                // Configurar Autocomplete para el campo "Tipo de Cirugía"
-                $('input[data-list]').each(function () {
-                    const availableTags = $('#' + $(this).attr("data-list")).find('option').map(function () {
-                        return this.value;
-                    }).get();
-
-                    $(this).autocomplete({
-                        source: availableTags
-                    }).on('focus', function () {
-                        $(this).autocomplete('search', ' ');
-                    }).on('search', function () {
-                        if ($(this).val() === '') {
-                            $(this).autocomplete('search', ' ');
-                        }
-                    });
-                });
-            });
-
-        // Obtener las opciones de enfermedades adyacentes
-        fetch('/enfermedades')
-            .then(response => response.json())
-            .then(data => {
-                const enfermedadAdyacenteSelect = document.getElementById('enfermedad-adyacente');
-                data.enfermedades.forEach(enfermedad => {
-                    const option = document.createElement('option');
-                    option.value = enfermedad;
-                    option.text = enfermedad;
-                    enfermedadAdyacenteSelect.appendChild(option);
-                });
-            });
-    </script>
+    <script src="static/js/formulario.js"></script>
 </body>
 </html>
+

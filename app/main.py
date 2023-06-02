@@ -5,9 +5,10 @@ import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from fastapi.staticfiles import StaticFiles
-from functions.buscar_enfermedades import buscar_enfermedades
-from functions.obtener_examenes import obtener_examenes
-from functions.obtener_tipo_riesgo import obtener_tipo_riesgo
+from funciones.buscar_enfermedades import buscar_enfermedades
+from funciones.obtener_examenes import obtener_examenes
+from funciones.obtener_tipo_riesgo import obtener_tipo_riesgo
+
 
 
 

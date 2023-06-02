@@ -7,6 +7,10 @@
     text-rendering: optimizeLegibility;
 }
 
+h1 {
+    text-align: center; /* Centrar el texto */
+}
+
 div.table-title {
     display: block;
     margin: auto;
@@ -161,6 +165,8 @@ p {
 }
 
 .btn-volver {
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: block; /* Convertir el botón en un elemento de bloque */
     padding: 10px 20px;
     font-size: 16px;
     background-color: #007bff;

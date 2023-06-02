@@ -10,9 +10,28 @@
     </div>
     <h1>Respuesta de análisis de paciente</h1>
     <p>Edad: {{ respuesta.edad }}</p>
-    <p>Tipo de ASA: {{ respuesta.asa }}</p>
-    <p>Tipo de riesgo: {{ respuesta.tipo_riesgo }}</p>
-    <p>Examenes: <span class="examenes">{{ respuesta.examenes }}</span></p>
+    <table>
+        <tr>
+            <th>Enfermedad</th>
+            <th>Tipo de ASA</th>
+        </tr>
+        {% for enfermedad, tipo_asa in respuesta.asa %}
+        <tr>
+            <td>{{ enfermedad }}</td>
+            <td>{{ tipo_asa }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <table>
+        <tr>
+            <th>Tipo de riesgo:</th>
+            <th>Examenes:</span></th>
+        </tr>
+        <tr>
+            <th>{{ respuesta.tipo_riesgo }}</th>
+            <th> <span class="examenes">{{ respuesta.examenes }}</th>
+        </tr>
+    </table>
     <button class="btn-volver" onclick="window.location.href='/formulario'">Volver al formulario</button>
 </body>
 </html>

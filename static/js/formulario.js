@@ -27,15 +27,52 @@ fetch('/tipos_cirugia')
         });
     });
 
-// Obtener las opciones de enfermedades adyacentes
-fetch('/enfermedades')
-    .then(response => response.json())
-    .then(data => {
-        const enfermedadAdyacenteSelect = document.getElementById('enfermedad-adyacente');
-        data.enfermedades.forEach(enfermedad => {
-            const option = document.createElement('option');
-            option.value = enfermedad;
-            option.text = enfermedad;
-            enfermedadAdyacenteSelect.appendChild(option);
+window.WDS_Chosen_Multiple_Dropdown = {};
+(function(window, $, that) {
+    that.init = function() {
+        that.cache();
+
+        if (that.meetsRequirements()) {
+            that.bindEvents();
+        }
+    };
+
+    that.cache = function() {
+        that.$c = {
+            window: $(window),
+            theDropdown: $('.chosen-select'),
+            enfermedadAdyacenteSelect: $('#enfermedad-adyacente')
+        };
+    };
+
+    that.bindEvents = function() {
+        that.$c.window.on('load', that.applyChosen);
+    };
+
+    that.meetsRequirements = function() {
+        return that.$c.theDropdown.length && that.$c.enfermedadAdyacenteSelect.length;
+    };
+
+    that.applyChosen = function() {
+        that.$c.theDropdown.chosen({
+            inherit_select_classes: true,
+            width: '300px',
         });
-    });
+    };
+
+    $(that.init);
+
+    // Obtener las opciones de enfermedades adyacentes
+    fetch('/enfermedades')
+        .then(response => response.json())
+        .then(data => {
+            data.enfermedades.forEach(enfermedad => {
+                const option = document.createElement('option');
+                option.value = enfermedad;
+                option.text = enfermedad;
+                that.$c.enfermedadAdyacenteSelect.append(option);
+            });
+
+            that.$c.enfermedadAdyacenteSelect.trigger('chosen:updated');
+        });
+})(window, jQuery, window.WDS_Chosen_Multiple_Dropdown);

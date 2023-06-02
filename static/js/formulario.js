@@ -56,7 +56,7 @@ window.WDS_Chosen_Multiple_Dropdown = {};
     that.applyChosen = function() {
         that.$c.theDropdown.chosen({
             inherit_select_classes: true,
-            width: '300px',
+            
         });
     };
 

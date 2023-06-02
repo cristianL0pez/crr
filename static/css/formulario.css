@@ -35,3 +35,9 @@
     padding: 10px 20px;
     font-size: 16px;
 }
+.form-group select[name="enfermedad_adyacente[]"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  

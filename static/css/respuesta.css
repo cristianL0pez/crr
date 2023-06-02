@@ -136,3 +136,35 @@ td.text-center {
 td.text-right {
     text-align: right;
 }
+h1 {
+    color: #333;
+}
+
+p {
+    margin-bottom: 10px;
+    text-align: center; /* Centrar los párrafos */
+}
+
+.examenes {
+    color: red;
+}
+
+.logo {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 200px;
+    height: 200px;
+}
+
+.btn-volver {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}

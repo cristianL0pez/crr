@@ -5,9 +5,6 @@ import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from fastapi.staticfiles import StaticFiles
-from funciones.buscar_enfermedades import buscar_enfermedades
-from funciones.obtener_examenes import obtener_examenes
-from funciones.obtener_tipo_riesgo import obtener_tipo_riesgo
 
 
 
@@ -68,7 +65,72 @@ async def analisis_paciente(request: Request):
     edad = int(form_data.get("edad", 0))
     tipo_cirugia = form_data.get("tipo_cirugia", "")
     enfermedades_adyacentes = form_data.getlist("enfermedad_adyacente[]")
+    def buscar_enfermedades(enfermedades_adyacentes):
+
+        tipos_asa = []
+
+        for enfermedad in enfermedades_adyacentes:
+            for col in df_enfermedades.columns:
+                if enfermedad in df_enfermedades[col].values:
+                    tipos_asa.append((enfermedad, col))
+
+        tipos_asa = sorted(list(set(tipos_asa)), key=lambda x: x[1], reverse=True)
+
+        return tipos_asa
     
+    
+    def obtener_tipo_riesgo(tipo_cirugia):
+        # Cargar el dataframe de Tipos de Cirugías desde el archivo Excel
+        df_cirugias = pd.read_excel("data/ListaDeCirugias.xlsx")
+        df_cirugias.columns = df_cirugias.columns.str.strip()
+
+        if tipo_cirugia in df_cirugias["Bajo Riesgo"].values:
+            return "Bajo Riesgo"
+        elif tipo_cirugia in df_cirugias["Riesgo Medio"].values:
+            return "Riesgo Medio"
+        elif tipo_cirugia in df_cirugias["Alto Riesgo"].values:
+            return "Alto Riesgo"
+        else:
+            return "Sin clasificar"  # Valor por defecto si no se cumple ninguna condición
+    
+    
+    
+    def obtener_examenes(tipo_asa, tipo_riesgo):
+        examenes = []
+
+        if tipo_asa:
+            asa_mayor = tipo_asa[0][1]
+
+            if asa_mayor == "ASA 1":
+                if tipo_riesgo == "Bajo Riesgo":
+                    examenes.append("No de rutina")
+                elif tipo_riesgo == "Riesgo Medio":
+                    examenes.append("No de rutina")
+                elif tipo_riesgo == "Alto Riesgo":
+                    examenes.append("Hemograma - Coagulación - ECG")
+            elif asa_mayor == "ASA 2":
+                if tipo_riesgo == "Bajo Riesgo":
+                    examenes.append("No de rutina")
+                elif tipo_riesgo == "Riesgo Medio":
+                    examenes.append("Función renal - ECG")
+                elif tipo_riesgo == "Alto Riesgo":
+                    examenes.append("Hemograma - Coagulación - Función renal - ECG")
+            elif asa_mayor == "ASA 3":
+                if tipo_riesgo == "Bajo Riesgo":
+                    examenes.append("Hemograma - Coagulación - ECG")
+                elif tipo_riesgo == "Riesgo Medio":
+                    examenes.append("Hemograma - Coagulación - Función renal - ECG")
+                elif tipo_riesgo == "Alto Riesgo":
+                    examenes.append("Hemograma - Coagulación - Función renal - ECG")
+            elif asa_mayor == "ASA 4":
+                if tipo_riesgo == "Bajo Riesgo":
+                    examenes.append("Hemograma - Coagulación - ECG - Función renal")
+                elif tipo_riesgo == "Riesgo Medio":
+                    examenes.append("Hemograma - Coagulación - ECG - Función renal")
+                elif tipo_riesgo == "Alto Riesgo":
+                    examenes.append("Hemograma - Coagulación - ECG - Función renal")
+
+        return examenes
     
     # Obtener los tipos de ASA correspondientes a las enfermedades adyacentes
     tipo_asa = buscar_enfermedades(enfermedades_adyacentes)

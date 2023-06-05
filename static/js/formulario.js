@@ -41,7 +41,7 @@ fetch('/enfermedades')
 
         // Inicializar Chosen en el campo select
         selectEnfermedad.chosen({
-            placeholder_text_multiple: "Elige Las Enfermedades"
+            placeholder_text_multiple: "Enfermedades"
         });
 
     });

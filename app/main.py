@@ -103,14 +103,14 @@ async def analisis_paciente(request: Request):
 
             if asa_mayor == "ASA 1":
                 if tipo_riesgo == "Bajo Riesgo":
-                    examenes.append("No de rutina")
+                    examenes.append("Ningún examen según protocolo.")
                 elif tipo_riesgo == "Riesgo Medio":
-                    examenes.append("No de rutina")
+                    examenes.append("Ningún examen según protocolo.")
                 elif tipo_riesgo == "Alto Riesgo":
                     examenes.append("Hemograma - Coagulación - ECG")
             elif asa_mayor == "ASA 2":
                 if tipo_riesgo == "Bajo Riesgo":
-                    examenes.append("No de rutina")
+                    examenes.append("Ningún examen según protocolo.")
                 elif tipo_riesgo == "Riesgo Medio":
                     examenes.append("Función renal - ECG")
                 elif tipo_riesgo == "Alto Riesgo":

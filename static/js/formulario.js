@@ -27,52 +27,21 @@ fetch('/tipos_cirugia')
         });
     });
 
-window.WDS_Chosen_Multiple_Dropdown = {};
-(function(window, $, that) {
-    that.init = function() {
-        that.cache();
+// Obtener las opciones de enfermedades adyacentes
+fetch('/enfermedades')
+    .then(response => response.json())
+    .then(data => {
+        const enfermedades = data.enfermedades;
 
-        if (that.meetsRequirements()) {
-            that.bindEvents();
-        }
-    };
-
-    that.cache = function() {
-        that.$c = {
-            window: $(window),
-            theDropdown: $('.chosen-select'),
-            enfermedadAdyacenteSelect: $('#enfermedad-adyacente')
-        };
-    };
-
-    that.bindEvents = function() {
-        that.$c.window.on('load', that.applyChosen);
-    };
-
-    that.meetsRequirements = function() {
-        return that.$c.theDropdown.length && that.$c.enfermedadAdyacenteSelect.length;
-    };
-
-    that.applyChosen = function() {
-        that.$c.theDropdown.chosen({
-            inherit_select_classes: true,
-            
+        // Agregar las opciones al select utilizando Chosen
+        const selectEnfermedad = jQuery("#enfermedad-adyacente");
+        enfermedades.forEach(enfermedad => {
+            selectEnfermedad.append(new Option(enfermedad, enfermedad));
         });
-    };
 
-    $(that.init);
-
-    // Obtener las opciones de enfermedades adyacentes
-    fetch('/enfermedades')
-        .then(response => response.json())
-        .then(data => {
-            data.enfermedades.forEach(enfermedad => {
-                const option = document.createElement('option');
-                option.value = enfermedad;
-                option.text = enfermedad;
-                that.$c.enfermedadAdyacenteSelect.append(option);
-            });
-
-            that.$c.enfermedadAdyacenteSelect.trigger('chosen:updated');
+        // Inicializar Chosen en el campo select
+        selectEnfermedad.chosen({
+            placeholder_text_multiple: "Elige Las Enfermedades"
         });
-})(window, jQuery, window.WDS_Chosen_Multiple_Dropdown);
+
+    });

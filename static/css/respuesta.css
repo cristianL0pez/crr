@@ -1,7 +1,7 @@
  /* Puedes personalizar los estilos según tus necesidades */
  body {
     background-color: #fefefe;
-    font-family: "Roboto", helvetica, arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif!important;
     font-size: 16px;
     font-weight: 400;
     text-rendering: optimizeLegibility;
@@ -9,6 +9,7 @@
 
 h1 {
     text-align: center; /* Centrar el texto */
+    font-family: Verdana, Arial, sans-serif!important;
 }
 
 div.table-title {
@@ -17,6 +18,7 @@ div.table-title {
     max-width: 600px;
     padding: 5px;
     width: 100%;
+    font-family: Verdana, Arial, sans-serif!important;
 }
 
 .table-title h3 {
@@ -24,7 +26,7 @@ div.table-title {
     font-size: 30px;
     font-weight: 400;
     font-style: normal;
-    font-family: "Roboto", helvetica, arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif!important;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     text-transform: uppercase;
 }
@@ -52,6 +54,7 @@ th {
     text-align: left;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
+    font-family: Verdana, Arial, sans-serif!important;
 }
 
 th:first-child {
@@ -70,6 +73,7 @@ tr {
     font-size: 16px;
     font-weight: normal;
     text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+    font-family: Verdana, Arial, sans-serif!important;
 }
 
 tr:hover td {
@@ -111,6 +115,7 @@ td {
     font-size: 18px;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
+    font-family: Verdana, Arial, sans-serif!important;
 }
 
 td:last-child {
@@ -173,4 +178,5 @@ p {
     color: #fff;
     border: none;
     cursor: pointer;
+    font-family: Verdana, Arial, sans-serif!important;
 }

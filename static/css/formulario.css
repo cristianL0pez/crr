@@ -35,3 +35,8 @@
     font-size: 16px;
     font-family: Verdana, Arial, sans-serif!important;
 }
+.form-group select[name="enfermedad_adyacente[]"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }

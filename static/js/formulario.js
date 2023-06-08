@@ -1,16 +1,21 @@
-// Obtener las opciones de tipo de cirugía
+// Obtener las opciones de tipo de cirugía solo una vez
 fetch('/tipos_cirugia')
     .then(response => response.json())
     .then(data => {
         const tipoCirugiaSelect = document.getElementById('tipo-cirugia-list');
+        const existingOptions = Array.from(tipoCirugiaSelect.options).map(option => option.value);
+
         data.tipos_cirugia.forEach(tipoCirugia => {
-            const option = document.createElement('option');
-            option.value = tipoCirugia;
-            tipoCirugiaSelect.appendChild(option);
+            if (!existingOptions.includes(tipoCirugia)) {
+                const option = document.createElement('option');
+                option.value = tipoCirugia;
+                tipoCirugiaSelect.appendChild(option);
+            }
         });
 
-        // Configurar Autocomplete para el campo "Tipo de Cirugía"
-        $('input[data-list]').each(function () {
+        // Configurar Autocomplete para el campo "Tipo de Cirugía" si no se ha configurado previamente
+        const inputFields = $('input[data-list]').not('.ui-autocomplete-input');
+        inputFields.each(function () {
             const availableTags = $('#' + $(this).attr("data-list")).find('option').map(function () {
                 return this.value;
             }).get();
